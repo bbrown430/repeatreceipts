@@ -4,7 +4,7 @@ from spotipy.oauth2 import SpotifyOAuth
 import time
 import configparser
 
-app = Flask(__name__, static_folder='static')
+app = Flask(__name__)
 
 config = configparser.ConfigParser()
 config.read('config.ini')
