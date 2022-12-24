@@ -236,7 +236,7 @@ def playlistParser(name, json):
         "years": [],
         "rank" : [count],
         "avgrank" : [],
-        "image" : i.get("track").get("album").get('images')[2].get('url')
+        "image" : i.get("track").get("album").get('images')[0].get('url')
         }
         templist.append(tempdict)
         count+=1
