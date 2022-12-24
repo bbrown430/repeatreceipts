@@ -370,3 +370,5 @@ def funStats(inlist):
     }
     return funstats
      
+if __name__ == '__main__':
+    app.run()
