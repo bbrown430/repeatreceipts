@@ -140,7 +140,7 @@ def followmore():
 
 @app.route('/w2022')
 def w2022():
-    return redirect('https://open.spotify.com/genre/2022-page')
+    return redirect('https://open.spotify.com/genre/0JQ5DAwD41iRZZRVB8exON')
 
 @app.route('/w2021')
 def w2021():
