@@ -35,6 +35,7 @@ def wrappedRepeats():
         return redirect(url_for("login", _external=False))
     
     sp = spotipy.Spotify(auth=token_info['access_token'])
+    userid = sp.me()["id"]
     wrappedPlaylists = searchList(scrapeLoop(sp))
     
     wrappedLinks = {
@@ -192,11 +193,11 @@ def scrapeLoop(sp):
     os=0
     run=True
     while(run):
-        capture = nameScraper(sp.current_user_playlists(limit=50, offset=os))
+        capture = nameScraper(sp.user_playlists((sp.me()["id"]),limit=50, offset=os))
         if capture ==[]:
             run=False
         else:
-            playlistlist.extend(nameScraper(sp.current_user_playlists(limit=50, offset=os)))
+            playlistlist.extend(nameScraper(sp.user_playlists((sp.me()["id"]),limit=50, offset=os)))
             os+=50
     return playlistlist
 
