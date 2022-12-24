@@ -229,6 +229,11 @@ def playlistParser(name, json):
     templist=[]
     count = 1
     for i in json['items']:
+        if i.get("track").get("album").get('images')[0].get('url'):
+            image = i.get("track").get("album").get('images')[0].get('url')
+        else:
+            image = "https://media.wired.com/photos/5a0201b14834c514857a7ed7/master/pass/1217-WI-APHIST-01.jpg"
+        
         tempdict={
         "name": i['track']['name'],
         "id": i['track']['id'],
@@ -236,7 +241,7 @@ def playlistParser(name, json):
         "years": [],
         "rank" : [count],
         "avgrank" : [],
-        "image" : i.get("track").get("album").get('images')[0].get('url')
+        "image" : image
         }
         templist.append(tempdict)
         count+=1
