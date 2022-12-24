@@ -2,6 +2,7 @@ from flask import Flask, request, url_for, session, redirect, render_template
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
+import json
 
 app = Flask(__name__)
 
@@ -12,6 +13,7 @@ TOKEN = "token_info"
 
 @app.route('/')
 def login():
+    session.clear()
     sp_oauth = create_spotify_oauth()
     auth_url = sp_oauth.get_authorize_url()
     print(auth_url)
@@ -234,7 +236,7 @@ def playlistParser(name, json):
         "years": [],
         "rank" : [count],
         "avgrank" : [],
-        "image" : i["track"]['album']['images'][2]['url']
+        "image" : i.get("track").get("album").get('images')[2].get('url')
         }
         templist.append(tempdict)
         count+=1
