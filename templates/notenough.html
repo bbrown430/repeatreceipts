@@ -1,0 +1,29 @@
+<html>
+<head>
+    <title>Wrapped Repeats</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body class="bg-dark">
+    <h1 class="text-center text-light my-3">Wrapped Repeats</h1>
+    <h5 class="text-center text-light my-3">We found Your Top songs of {{ years_string }}.</h5>
+    {% if not wrappedLinks %}
+        <h6 class="text-center text-light my-3">Looks like you're already following all of the available playlists.</h6>
+    {% else %}
+        <h6 class="text-center text-light my-3">Make sure you're following these playlists and then retry.</h6>
+    {% endif %}
+    <div >
+        {% for key, value in wrappedLinks.items() %}
+            <a style = "display: block; text-align: center; max-width: 200px; margin: auto;" class="text-light" href="{{ url_for(value)}}">{{key}}</a>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('wrappedRepeats') }}" style="text-decoration: none;">
+        {% if not wrappedLinks %}
+            <button type="button" class="btn btn-lg mt-4 mb-4 btn-light" style="display:block; margin: auto;">Go Back</button>
+        {% else %}
+        <button type="button" class="btn btn-lg mt-4 mb-4 btn-light" style="display:block; margin: auto;">Retry</button>
+        {% endif %}
+      </a>
+</body>
+</html>
