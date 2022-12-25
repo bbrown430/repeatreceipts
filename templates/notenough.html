@@ -6,7 +6,11 @@
 </head>
 <body class="bg-dark">
     <h1 class="text-center text-light my-3">Wrapped Repeats</h1>
-    <h5 class="text-center text-light my-3">We found Your Top songs of {{ years_string }}.</h5>
+    {% if not wrappedPlaylists %}
+        <h5 class="text-center text-light my-3">We couldn't find any of Your Top Song Playlists.</h5>
+    {% else %}
+        <h5 class="text-center text-light my-3">We found Your Top songs of {{ years_string }}.</h5>
+    {% endif %}
     {% if not wrappedLinks %}
         <h6 class="text-center text-light my-3">Looks like you're already following all of the available playlists.</h6>
     {% else %}
