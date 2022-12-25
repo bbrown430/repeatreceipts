@@ -11,7 +11,6 @@ app.config['SESSION_COOKIE_NAME'] = "Session Cookie"
 
 @app.route('/')
 def login():
-    session.clear()
     sp_oauth = create_spotify_oauth()
     auth_url = sp_oauth.get_authorize_url()
     print(auth_url)
@@ -19,8 +18,8 @@ def login():
 
 @app.route('/authorize')
 def authorize():
-    session.clear()
     sp_oauth = create_spotify_oauth()
+    session.clear()
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
     session["token_info"] = token_info
@@ -28,7 +27,6 @@ def authorize():
 
 @app.route('/wrappedRepeats')
 def wrappedRepeats():
-    session.clear()
     session['token_info'], authorized = get_token()
     session.modified = True
     
@@ -87,7 +85,6 @@ def wrappedRepeats():
 
 @app.route('/makeplaylist')
 def makeplaylist():
-    session.clear()
     session['token_info'], authorized = get_token()
     session.modified = True
     
@@ -105,7 +102,6 @@ def makeplaylist():
 
 @app.route('/followmore')
 def followmore():
-    session.clear()
     session['token_info'], authorized = get_token()
     session.modified = True
     
