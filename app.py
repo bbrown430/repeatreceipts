@@ -2,13 +2,12 @@ from flask import Flask, request, url_for, session, redirect, render_template
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
+import os
 
 app = Flask(__name__, static_folder='static')
 
-app.secret_key = 'h89nfdn1283'
+app.secret_key = os.getenv("appsecret")
 app.config['SESSION_COOKIE_NAME'] = "Session Cookie"
-#TOKEN = "token_info"
-
 
 @app.route('/')
 def login():
@@ -183,8 +182,8 @@ def get_token():
 
 def create_spotify_oauth():
     return SpotifyOAuth(
-        client_id='ee8d0921f85d4ee68b08456a4739eae0',
-        client_secret='e67824c7f167473aa2e2af7dd38e9925',
+        client_id=os.getenv("clientid"),
+        client_secret=os.getenv("clientsecret"),
         redirect_uri=url_for('authorize', _external=True),
         scope="playlist-read-private playlist-modify-public playlist-modify-private")
 
