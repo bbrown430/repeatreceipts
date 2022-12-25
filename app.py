@@ -3,7 +3,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 app.secret_key = 'h89nfdn1283'
 app.config['SESSION_COOKIE_NAME'] = "Session Cookie"
