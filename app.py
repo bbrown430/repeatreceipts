@@ -29,11 +29,11 @@ def authorize():
 
 @app.route('/wrappedRepeats')
 def wrappedRepeats():
-    try:
-        token_info= get_token()
-    except:
-        print("user not logged in")
-        return redirect(url_for("login", _external=False))
+    session['token_info'], authorized = get_token()
+    session.modified = True
+    
+    if not authorized:
+        return redirect('/')
     
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     wrappedPlaylists = searchList(scrapeLoop(sp))
@@ -87,11 +87,11 @@ def wrappedRepeats():
 
 @app.route('/makeplaylist')
 def makeplaylist():
-    try:
-        token_info= get_token()
-    except:
-        print("user not logged in")
-        return redirect(url_for("login", _external=False))
+    session['token_info'], authorized = get_token()
+    session.modified = True
+    
+    if not authorized:
+        return redirect('/')
     
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     userid = sp.me()["id"]
@@ -104,11 +104,11 @@ def makeplaylist():
 
 @app.route('/followmore')
 def followmore():
-    try:
-        token_info= get_token()
-    except:
-        print("user not logged in")
-        return redirect(url_for("login", _external=False))
+    session['token_info'], authorized = get_token()
+    session.modified = True
+    
+    if not authorized:
+        return redirect('/')
     
     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     
