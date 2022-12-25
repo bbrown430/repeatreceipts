@@ -46,7 +46,7 @@
         {% endfor %}
         {{ funStats['biggestGap'][0]}} by {{ funStats['biggestGap'][1]}} had the biggest gap between appearances with {{ funStats['biggestGap'][2]}} years between {{ funStats['biggestGap'][3]}}.
     </p>
-    <button type="button" class="btn btn-lg text-light mt-4 mb-4" style="background-color: #1Db954; display: block; margin: auto;" onclick="buttonClicked()">Generate Playlist</button>
+    <button type="button" class="btn btn-lg text-dark mt-4 mb-4" style="background-color: #1Db954; display: block; margin: auto;" onclick="buttonClicked()">Generate Playlist</button>
     <script>
         function buttonClicked() {
           fetch('/makeplaylist')
