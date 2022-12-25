@@ -35,8 +35,7 @@ def wrappedRepeats():
         print("user not logged in")
         return redirect(url_for("login", _external=False))
     
-    sp = spotipy.Spotify(auth=token_info['access_token'])
-    userid = sp.me()["id"]
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     wrappedPlaylists = searchList(scrapeLoop(sp))
     
     wrappedLinks = {
@@ -94,7 +93,7 @@ def makeplaylist():
         print("user not logged in")
         return redirect(url_for("login", _external=False))
     
-    sp = spotipy.Spotify(auth=token_info['access_token'])
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     userid = sp.me()["id"]
     songlist=[]
     for i in rawdata:
@@ -111,7 +110,7 @@ def followmore():
         print("user not logged in")
         return redirect(url_for("login", _external=False))
     
-    sp = spotipy.Spotify(auth=token_info['access_token'])
+    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
     
     wrappedPlaylists = searchList(scrapeLoop(sp))
     
