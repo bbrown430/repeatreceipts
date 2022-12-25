@@ -2,18 +2,17 @@ from flask import Flask, request, url_for, session, redirect, render_template
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
-import json
 
 app = Flask(__name__)
 
 app.secret_key = 'h89nfdn1283'
 app.config['SESSION_COOKIE_NAME'] = "Session Cookie"
-TOKEN = "token_info"
+#TOKEN = "token_info"
 
 
 @app.route('/')
 def login():
-    session.clear()
+    #session.clear()
     sp_oauth = create_spotify_oauth()
     auth_url = sp_oauth.get_authorize_url()
     print(auth_url)
@@ -25,7 +24,7 @@ def authorize():
     session.clear()
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
-    session[TOKEN] = token_info
+    session["token_info"] = token_info
     return redirect(url_for('wrappedRepeats', _external=True))
 
 @app.route('/wrappedRepeats')
@@ -163,15 +162,25 @@ def w2017():
     return redirect('https://open.spotify.com/genre/2017-page')
 
 def get_token():
-    token_info = session.get(TOKEN, None)
-    if not token_info:
-        raise "exception"
+    token_valid = False
+    token_info = session.get("token_info", {})
+
+    # Checking if the session already has a token stored
+    if not (session.get('token_info', False)):
+        token_valid = False
+        return token_info, token_valid
+
+    # Checking if token has expired
     now = int(time.time())
-    is_expired = token_info['expires_at'] - now < 60
-    if (is_expired):
+    is_token_expired = session.get('token_info').get('expires_at') - now < 60
+
+    # Refreshing token if it has expired
+    if (is_token_expired):
         sp_oauth = create_spotify_oauth()
-        token_info = sp_oauth.refresh_access_token(token_info['refresh_token'])
-    return token_info    
+        token_info = sp_oauth.refresh_access_token(session.get('token_info').get('refresh_token'))
+
+    token_valid = True
+    return token_info, token_valid
 
 def create_spotify_oauth():
     return SpotifyOAuth(
@@ -229,8 +238,8 @@ def playlistParser(name, json):
     templist=[]
     count = 1
     for i in json['items']:
-        if i.get("track").get("album").get('images')[0].get('url'):
-            image = i.get("track").get("album").get('images')[0].get('url')
+        if i.get("track").get("album").get('images'):
+            image = i.get("track").get("album").get('images')[2].get('url')
         else:
             image = "https://media.wired.com/photos/5a0201b14834c514857a7ed7/master/pass/1217-WI-APHIST-01.jpg"
         
