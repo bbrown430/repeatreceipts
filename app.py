@@ -28,6 +28,7 @@ def authorize():
 
 @app.route('/wrappedRepeats')
 def wrappedRepeats():
+    session.clear()
     session['token_info'], authorized = get_token()
     session.modified = True
     
@@ -86,6 +87,7 @@ def wrappedRepeats():
 
 @app.route('/makeplaylist')
 def makeplaylist():
+    session.clear()
     session['token_info'], authorized = get_token()
     session.modified = True
     
@@ -103,6 +105,7 @@ def makeplaylist():
 
 @app.route('/followmore')
 def followmore():
+    session.clear()
     session['token_info'], authorized = get_token()
     session.modified = True
     
