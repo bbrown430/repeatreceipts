@@ -12,7 +12,7 @@ app.config['SESSION_COOKIE_NAME'] = "Session Cookie"
 
 @app.route('/')
 def login():
-    #session.clear()
+    session.clear()
     sp_oauth = create_spotify_oauth()
     auth_url = sp_oauth.get_authorize_url()
     print(auth_url)
@@ -20,8 +20,8 @@ def login():
 
 @app.route('/authorize')
 def authorize():
-    sp_oauth = create_spotify_oauth()
     session.clear()
+    sp_oauth = create_spotify_oauth()
     code = request.args.get('code')
     token_info = sp_oauth.get_access_token(code)
     session["token_info"] = token_info
