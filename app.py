@@ -1,5 +1,6 @@
 from flask import Flask, request, url_for, session, redirect, render_template
 import spotipy
+from spotipy.cache_handler import c
 from spotipy.oauth2 import SpotifyOAuth
 import time
 import os
