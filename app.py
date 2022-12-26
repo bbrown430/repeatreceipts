@@ -105,8 +105,11 @@ def makeplaylist():
     songlist=[]
     for i in rawdata:
         songlist.append("spotify:track:"+i['id'])
+    splitsonglist= list(divide_chunks(songlist, 100))
+    
     playlistid = ((sp.user_playlist_create(userid, "Wrapped Repeats", public=False, collaborative=False, description="The songs you've loved for multiple years."))['id'])
-    sp.user_playlist_add_tracks(userid, playlistid, songlist)
+    for i in splitsonglist:
+        sp.user_playlist_add_tracks(userid, playlistid, i)
     return "Playlist generated!"
 
 @app.route('/followmore')
@@ -360,6 +363,12 @@ def funStats(inlist):
         "biggestGap": bigGap 
     }
     return funstats
+
+def divide_chunks(l, n):
+     
+    # looping till length l
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
      
 if __name__ == '__main__':
     app.run(threaded=True, port=int(os.environ.get("PORT",
