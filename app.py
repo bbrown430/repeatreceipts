@@ -29,7 +29,7 @@ def login():
     if not auth_manager.validate_token(cache_handler.get_cached_token()):
         # Step 1. Display sign in link when no token
         auth_url = auth_manager.get_authorize_url()
-        return f'<h2><a href="{auth_url}">Sign in</a></h2>'
+        return render_template("login.html", auth_url=auth_url)
 
     # Step 3. Signed in, display data
     spotify = spotipy.Spotify(auth_manager=auth_manager)
@@ -62,6 +62,7 @@ def wrappedRepeats():
     for playlist in wrappedPlaylists:
         year = playlist['name'][-4:]
         years.append(year)
+        years.sort()
         
     years_string = ', '.join(years)
     
@@ -104,7 +105,7 @@ def makeplaylist():
     songlist=[]
     for i in rawdata:
         songlist.append("spotify:track:"+i['id'])
-    playlistid = ((sp.user_playlist_create(userid, "Wrapped Repeats", public=True, collaborative=False, description="The songs you've loved for multiple years."))['id'])
+    playlistid = ((sp.user_playlist_create(userid, "Wrapped Repeats", public=False, collaborative=False, description="The songs you've loved for multiple years."))['id'])
     sp.user_playlist_add_tracks(userid, playlistid, songlist)
     return "Playlist generated!"
 
@@ -136,6 +137,8 @@ def followmore():
     for playlist in wrappedPlaylists:
         year = playlist['name'][-4:]
         years.append(year)
+        years.sort()
+
         
     years_string = ', '.join(years)
     

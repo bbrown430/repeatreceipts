@@ -13,6 +13,25 @@
             <button type="button" class="btn btn-sm btn-light mx-2">Click Here</button>
         </a>
     </p>
+    <h2 class="text-center text-light mt-4 mb-3">Additional Stats</h2>
+    <p class="text-center text-light">
+        Your favorite artist was {{ funStats['topArtist'][0]}} with {{ funStats['topArtist'][1]}} appearances.</br>
+        Songs in your {{ funStats['topYear'][0]}} Wrapped were featured {{ funStats['topYear'][1]}} other times.</br>
+        {% for tup in funStats['sharedRank'] %}
+            {{ tup['name'] }} by {{ tup['artist'] }} was ranked exactly {{ tup['rank'] }} in both {{ tup['years'] }}.</br> 
+        {% endfor %}
+        {{ funStats['biggestGap'][0]}} by {{ funStats['biggestGap'][1]}} had the biggest gap between appearances with {{ funStats['biggestGap'][2]}} years between {{ funStats['biggestGap'][3]}}.
+    </p>
+    <button type="button" class="btn btn-lg text-dark mt-4 mb-4" style="background-color: #1Db954; display: block; margin: auto;" onclick="buttonClicked()">Generate Playlist</button>
+    <script>
+        function buttonClicked() {
+          fetch('/makeplaylist')
+            .then(response => response.text())
+            .then(text => {
+              alert(text);
+            });
+        }
+      </script>
         <table class="table table-striped table-dark">
         <thead class="thead-dark">
             <tr>
@@ -37,24 +56,6 @@
             </tr>
         {% endfor %}
     </table>
-    <h1 class="text-center text-light mt-4 mb-3">Additional Stats</h1>
-    <p class="text-center text-light">
-        Your favorite artist was {{ funStats['topArtist'][0]}} with {{ funStats['topArtist'][1]}} appearances.</br>
-        Songs in your {{ funStats['topYear'][0]}} Wrapped were featured {{ funStats['topYear'][1]}} other times.</br>
-        {% for tup in funStats['sharedRank'] %}
-            {{ tup['name'] }} by {{ tup['artist'] }} was ranked exactly {{ tup['rank'] }} in both {{ tup['years'] }}.</br> 
-        {% endfor %}
-        {{ funStats['biggestGap'][0]}} by {{ funStats['biggestGap'][1]}} had the biggest gap between appearances with {{ funStats['biggestGap'][2]}} years between {{ funStats['biggestGap'][3]}}.
-    </p>
-    <button type="button" class="btn btn-lg text-dark mt-4 mb-4" style="background-color: #1Db954; display: block; margin: auto;" onclick="buttonClicked()">Generate Playlist</button>
-    <script>
-        function buttonClicked() {
-          fetch('/makeplaylist')
-            .then(response => response.text())
-            .then(text => {
-              alert(text);
-            });
-        }
-      </script>
+    
 </body>
 </html>
