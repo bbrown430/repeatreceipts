@@ -3,37 +3,46 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import time
 import os
+from flask_session import Session
 
 app = Flask(__name__, static_folder='static')
 
-app.secret_key = os.getenv("appsecret")
-app.config['SESSION_COOKIE_NAME'] = "Session Cookie"
+app.config['SECRET_KEY'] = os.urandom(64)
+app.config['SESSION_TYPE'] = 'filesystem'
+app.config['SESSION_FILE_DIR'] = './.flask_session/'
+Session(app)
+
 
 @app.route('/')
 def login():
-    sp_oauth = create_spotify_oauth()
-    auth_url = sp_oauth.get_authorize_url()
-    print(auth_url)
-    return redirect(auth_url)
+    
+    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    auth_manager = spotipy.oauth2.SpotifyOAuth(scope="playlist-read-private playlist-modify-public playlist-modify-private",
+                                               cache_handler=cache_handler,
+                                               show_dialog=True)
 
-@app.route('/authorize')
-def authorize():
-    sp_oauth = create_spotify_oauth()
-    session.clear()
-    code = request.args.get('code')
-    token_info = sp_oauth.get_access_token(code)
-    session["token_info"] = token_info
+    if request.args.get("code"):
+        # Step 2. Being redirected from Spotify auth page
+        auth_manager.get_access_token(request.args.get("code"))
+        return redirect('/')
+
+    if not auth_manager.validate_token(cache_handler.get_cached_token()):
+        # Step 1. Display sign in link when no token
+        auth_url = auth_manager.get_authorize_url()
+        return f'<h2><a href="{auth_url}">Sign in</a></h2>'
+
+    # Step 3. Signed in, display data
+    spotify = spotipy.Spotify(auth_manager=auth_manager)
     return redirect(url_for('wrappedRepeats', _external=True))
 
 @app.route('/wrappedRepeats')
 def wrappedRepeats():
-    session['token_info'], authorized = get_token()
-    session.modified = True
-    
-    if not authorized:
+    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+    if not auth_manager.validate_token(cache_handler.get_cached_token()):
         return redirect('/')
-    
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+
+    sp = spotipy.Spotify(auth_manager=auth_manager)
     wrappedPlaylists = searchList(scrapeLoop(sp))
     
     wrappedLinks = {
@@ -85,13 +94,12 @@ def wrappedRepeats():
 
 @app.route('/makeplaylist')
 def makeplaylist():
-    session['token_info'], authorized = get_token()
-    session.modified = True
-    
-    if not authorized:
+    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+    if not auth_manager.validate_token(cache_handler.get_cached_token()):
         return redirect('/')
-    
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+
+    sp = spotipy.Spotify(auth_manager=auth_manager)
     userid = sp.me()["id"]
     songlist=[]
     for i in rawdata:
@@ -102,13 +110,12 @@ def makeplaylist():
 
 @app.route('/followmore')
 def followmore():
-    session['token_info'], authorized = get_token()
-    session.modified = True
-    
-    if not authorized:
+    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
+    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
+    if not auth_manager.validate_token(cache_handler.get_cached_token()):
         return redirect('/')
-    
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+
+    sp = spotipy.Spotify(auth_manager=auth_manager)
     
     wrappedPlaylists = searchList(scrapeLoop(sp))
     
@@ -157,34 +164,6 @@ def w2018():
 @app.route('/w2017')
 def w2017():
     return redirect('https://open.spotify.com/genre/2017-page')
-
-def get_token():
-    token_valid = False
-    token_info = session.get("token_info", {})
-
-    # Checking if the session already has a token stored
-    if not (session.get('token_info', False)):
-        token_valid = False
-        return token_info, token_valid
-
-    # Checking if token has expired
-    now = int(time.time())
-    is_token_expired = session.get('token_info').get('expires_at') - now < 60
-
-    # Refreshing token if it has expired
-    if (is_token_expired):
-        sp_oauth = create_spotify_oauth()
-        token_info = sp_oauth.refresh_access_token(session.get('token_info').get('refresh_token'))
-
-    token_valid = True
-    return token_info, token_valid
-
-def create_spotify_oauth():
-    return SpotifyOAuth(
-        client_id=os.getenv("clientid"),
-        client_secret=os.getenv("clientsecret"),
-        redirect_uri=url_for('authorize', _external=True),
-        scope="playlist-read-private playlist-modify-public playlist-modify-private")
 
 def nameScraper(json):
     templist=[]
