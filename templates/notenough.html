@@ -6,20 +6,23 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body class="bg-dark">
-    <h1 class="text-center text-light my-3">Wrapped Repeats</h1>
-    {% if not wrappedPlaylists %}
-        <h5 class="text-center text-light my-3">We couldn't find any of Your Top Song Playlists.</h5>
-    {% else %}
-        <h5 class="text-center text-light my-3">We found Your Top songs of {{ years_string }}.</h5>
-    {% endif %}
-    {% if not wrappedLinks %}
-        <h6 class="text-center text-light my-3">Looks like you're already following all of the available playlists.</h6>
-    {% else %}
-        <h6 class="text-center text-light my-3">Make sure you're following these playlists and then retry.</h6>
-    {% endif %}
+    <div style="padding:10px 0px 10px 0px">
+        <h1 class="text-center text-light" >Wrapped Repeats</h1>
+        {% if not wrappedPlaylists %}
+            <h5 class="text-center text-light">We couldn't find any of Your Top Song Playlists.</h5>
+        {% else %}
+            <h5 class="text-center text-light">We found Your Top songs of {{ years_string }}.</h5>
+        {% endif %}
+        {% if not wrappedLinks %}
+            <h6 class="text-center text-light">Looks like you're already following all of the available playlists.</h6>
+        {% else %}
+            <h6 class="text-center text-light">Click the links below to follow the playlist, and then retry.</h6>
+        {% endif %}
+    </div>
+    
     <div >
         {% for key, value in wrappedLinks.items() %}
-            <a style = "display: block; text-align: center; max-width: 200px; margin: auto;" class="text-light" href="{{ url_for(value)}}" target="_blank">{{key}}</a>
+            <a style = "display: block; text-align: center; max-width: 200px; margin: auto; text-decoration: underline; color: white" href="{{ url_for(value)}}" target="_blank">{{key}}</a>
         {% endfor %}
     </div>
     <a href="{{ url_for('wrappedRepeats') }}" style="text-decoration: none;">

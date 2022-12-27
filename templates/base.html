@@ -6,22 +6,16 @@
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
 <body class="bg-dark">
-    <h1 class="text-center text-light my-3">Wrapped Repeats</h1>
-    <h5 class="text-center text-light my-3">Displaying data from Your Top Songs of {{ years_string }}.</h3>
+    <div style="padding:10px 0px 10px 0px">
+        <h1 class="text-center text-light" >Wrapped Repeats</h1>
+        <h6 class="text-center text-light" >Displaying data from Your Top Songs of {{ years_string }}.</h6>
+    </div>
     <p class="text-center text-light"> Expecting more years?
         <a class="text-light" href="{{ url_for('followmore') }}" style="text-decoration: none;">
             <button type="button" class="btn btn-sm btn-light mx-2">Click Here</button>
         </a>
     </p>
-    <h2 class="text-center text-light mt-4 mb-3">Additional Stats</h2>
-    <p class="text-center text-light">
-        Your favorite artist was {{ funStats['topArtist'][0]}} with {{ funStats['topArtist'][1]}} appearances.</br>
-        Songs in your {{ funStats['topYear'][0]}} Wrapped were featured {{ funStats['topYear'][1]}} other times.</br>
-        {% for tup in funStats['sharedRank'] %}
-            {{ tup['name'] }} by {{ tup['artist'] }} was ranked exactly {{ tup['rank'] }} in both {{ tup['years'] }}.</br> 
-        {% endfor %}
-        {{ funStats['biggestGap'][0]}} by {{ funStats['biggestGap'][1]}} had the biggest gap between appearances with {{ funStats['biggestGap'][2]}} years between {{ funStats['biggestGap'][3]}}.
-    </p>
+    
     <button type="button" class="btn btn-lg text-dark mt-4 mb-4" style="background-color: #1Db954; display: block; margin: auto;" onclick="buttonClicked()">Generate Playlist</button>
     <script>
         function buttonClicked() {
@@ -56,6 +50,14 @@
             </tr>
         {% endfor %}
     </table>
-    
+    <h2 class="text-center text-light mt-4 mb-3">Additional Stats</h2>
+    <p class="text-center text-light">
+        Your favorite artist was {{ funStats['topArtist'][0]}} with {{ funStats['topArtist'][1]}} appearances.</br>
+        Songs in your {{ funStats['topYear'][0]}} Wrapped were featured {{ funStats['topYear'][1]}} other times.</br>
+        {% for tup in funStats['sharedRank'] %}
+            {{ tup['name'] }} by {{ tup['artist'] }} was ranked exactly {{ tup['rank'] }} in both {{ tup['years'] }}.</br> 
+        {% endfor %}
+        {{ funStats['biggestGap'][0]}} by {{ funStats['biggestGap'][1]}} had the biggest gap between appearances with {{ funStats['biggestGap'][2]}} years between {{ funStats['biggestGap'][3]}}.
+    </p>
 </body>
 </html>
