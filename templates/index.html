@@ -75,6 +75,8 @@
         {% endfor %}
     </p>
     {% else %}
-        <h2 class="text-center unique">No similarities found between Wrapped Playlists.</h2>
+        {% if wrappedPlaylists|length>=2 %}
+            <h2 class="text-center unique">No similarities found between Wrapped Playlists.</h2>
+        {% endif %}
     {% endif %}
 {% endblock %}
