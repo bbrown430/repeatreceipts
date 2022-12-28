@@ -13,7 +13,6 @@ Session(app)
 
 @app.route('/')
 def login():
-    
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
     auth_manager = spotipy.oauth2.SpotifyOAuth(scope="playlist-read-private playlist-modify-public playlist-modify-private",
                                                cache_handler=cache_handler,
@@ -41,55 +40,64 @@ def wrappedRepeats():
         return redirect('/')
 
     sp = spotipy.Spotify(auth_manager=auth_manager)
+    
+    #finds wrapped playlists
     wrappedPlaylists = searchList(scrapeLoop(sp))
     
+    #links to be passed into HTML
     wrappedLinks = {
-            'Your Top Songs 2022': 'w2022',
-            'Your Top Songs 2021': 'w2021',
-            'Your Top Songs 2020': 'w2020',
-            'Your Top Songs 2019': 'w2019',
-            'Your Top Songs 2018': 'w2018',
-            'Your Top Songs 2017': 'w2017',
-            'Your Top Songs 2016': 'w2016'
+            '2022': 'w2022',
+            '2021': 'w2021',
+            '2020': 'w2020',
+            '2019': 'w2019',
+            '2018': 'w2018',
+            '2017': 'w2017',
+            '2016': 'w2016'
         }
-        
-    for item in wrappedPlaylists:
-        if item['name'] in wrappedLinks:
-            wrappedLinks.pop(item['name'])
     
+    #if playlist is found, remove link from dictionary    
+    for item in wrappedPlaylists:
+        if item['name'].split(' ')[-1] in wrappedLinks:
+            wrappedLinks.pop(item['name'].split(' ')[-1])
+    
+    #string of years because easier to pass into HTML
     years = []
     for playlist in wrappedPlaylists:
         year = playlist['name'][-4:]
         years.append(year)
         years.sort()
-        
     years_string = ', '.join(years)
     
-    if len(wrappedPlaylists) <= 1:
-        
-        return render_template("notenough.html", wrappedPlaylists=wrappedPlaylists,wrappedLinks=wrappedLinks, years_string=years_string)
+    #needs to be global to be accessed when making playlist
+    global rawdata
     
+    #data processing
+    rawdata = splitlist(cleanList(loopAllYears(wrappedPlaylists,sp)))
+    
+    #formatting data to get passed into HTML
+    def maindata(inputdata):
+        rows = []
+        count = 0
+        for item in inputdata:
+            count+=1
+            rows.append({
+                'count': count,
+                'image': item['image'],
+                'name' : item['name'],
+                'artist' : item['artist'],
+                'rank': round(item['avgrank']),
+                'ocurrences': len(item['years']),
+                'years': (', '.join(item['years']))
+            })  
+        return rows
+    
+    #stops HTML conditions from breaking
+    if rawdata:
+        inputrows = maindata(rawdata)
     else:
-        global rawdata
-        rawdata = splitlist(cleanList(loopAllYears(wrappedPlaylists,sp)))
+        inputrows=None
         
-        def maindata(inputdata):
-            rows = []
-            count = 0
-            for item in inputdata:
-                count+=1
-                rows.append({
-                    'count': count,
-                    'image': item['image'],
-                    'name' : item['name'],
-                    'artist' : item['artist'],
-                    'rank': round(item['avgrank']),
-                    'ocurrences': len(item['years']),
-                    'years': (', '.join(item['years']))
-                })  
-            return rows
-        
-        return render_template("base.html", rows=maindata(rawdata), funStats=funStats(rawdata), years_string=years_string, wrappedPlaylists=wrappedPlaylists,wrappedLinks=wrappedLinks)
+    return render_template("index.html", rows=inputrows, funStats=funStats(rawdata), years_string=years_string, wrappedPlaylists=wrappedPlaylists,wrappedLinks=wrappedLinks)
 
 
 @app.route('/makeplaylist')
@@ -100,7 +108,10 @@ def makeplaylist():
         return redirect('/')
 
     sp = spotipy.Spotify(auth_manager=auth_manager)
+    #sets user ID (could be simplified)
     userid = sp.me()["id"]
+    
+    #list of song IDS
     songlist=[]
     for i in rawdata:
         songlist.append("spotify:track:"+i['id'])
@@ -110,42 +121,6 @@ def makeplaylist():
     for i in splitsonglist:
         sp.user_playlist_add_tracks(userid, results['id'], i)
     return results['external_urls']['spotify']
-
-@app.route('/followmore')
-def followmore():
-    cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
-    auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
-    if not auth_manager.validate_token(cache_handler.get_cached_token()):
-        return redirect('/')
-
-    sp = spotipy.Spotify(auth_manager=auth_manager)
-    
-    wrappedPlaylists = searchList(scrapeLoop(sp))
-    
-    wrappedLinks = {
-            'Your Top Songs 2022': 'w2022',
-            'Your Top Songs 2021': 'w2021',
-            'Your Top Songs 2020': 'w2020',
-            'Your Top Songs 2019': 'w2019',
-            'Your Top Songs 2018': 'w2018',
-            'Your Top Songs 2017': 'w2017',
-            'Your Top Songs 2016': 'w2016'
-        }
-        
-    for item in wrappedPlaylists:
-        if item['name'] in wrappedLinks:
-            wrappedLinks.pop(item['name'])
-    
-    years = []
-    for playlist in wrappedPlaylists:
-        year = playlist['name'][-4:]
-        years.append(year)
-        years.sort()
-
-        
-    years_string = ', '.join(years)
-    
-    return render_template("notenough.html", wrappedPlaylists=wrappedPlaylists,wrappedLinks=wrappedLinks, years_string=years_string)
 
 @app.route('/w2022')
 def w2022():
@@ -175,6 +150,7 @@ def w2017():
 def w2016():
     return redirect('https://open.spotify.com/genre/2016-page')
 
+#scrapes playlist names and IDs
 def nameScraper(json):
     templist=[]
     for i in json['items']:
@@ -185,6 +161,7 @@ def nameScraper(json):
         templist.append(tempdict)
     return templist
 
+#loops through nameScraper because of 50 offset limit
 def scrapeLoop(sp):
     playlistlist=[]
     os=0
@@ -198,6 +175,7 @@ def scrapeLoop(sp):
             os+=50
     return playlistlist
 
+#searches all user playlists for Your Top Songs Playlists
 def searchList(json):
     yourTopList=[]
     for i in json:
@@ -209,6 +187,7 @@ def searchList(json):
             yourTopList.append(tempdict)
     return yourTopList
 
+# dont remember
 def loopAllYears(json,sp):
     masterList = []
     parsedPlaylists=[]
@@ -220,6 +199,7 @@ def loopAllYears(json,sp):
             masterList.append(playlistCompare(i, j))
     return masterList
 
+#returns only data that I care about
 def playlistParser(name, json):
     templist=[]
     count = 1
@@ -246,6 +226,7 @@ def playlistParser(name, json):
     }
     return playlistDic
 
+#compares two songs to see if the same
 def playlistCompare(dic1, dic2):
     tempList=[]
     year1=((dic1['name']).split('Your Top Songs ')[1])
@@ -262,6 +243,7 @@ def playlistCompare(dic1, dic2):
                     tempList.append(i)
     return tempList
 
+#cleans messy data up into usable data
 def cleanList(thislist):
     #remove None
     cleanlist = list(filter(lambda item: item is not None, thislist))
@@ -301,6 +283,7 @@ def cleanList(thislist):
         i['avgrank']= (sum(i['rank'])/len(i['rank']))
     return cleanerlist
 
+#splits into how often it ocurrs, helpful for ranking
 def splitlist(thislist):
     maxyears=0
     for i in thislist:
@@ -319,6 +302,7 @@ def splitlist(thislist):
     cleanlist = [element for innerList in rankedlist for element in innerList]
     return cleanlist
 
+#sorting
 def selectionSort(array, size):
     for ind in range(size):
         min_index = ind
@@ -331,42 +315,48 @@ def selectionSort(array, size):
         
 def funStats(inlist):
     #most popular artist
-    artistlist=[]
-    years=[]
-    gapCount = 0
-    gap = {}
-    gapYears = []
-    sameRank = []
-    for i in inlist:
-        artistlist.append(i['artist'])
-        years.append(i['years'])
-        for k in range (len(i['years'])-1):
-            tempgap=(abs(int(i['years'][k])-int(i['years'][k+1])))
-            if tempgap>gapCount:
-                gap = i
-                gapCount=tempgap
-                gapYears=[(i['years'][k]),(i['years'][k+1])]
-    favArt = max(set(artistlist),key=artistlist.count)
-    favArtistCount = artistlist.count(favArt)
-    favArtist = [favArt,favArtistCount]
-    #most popular year
-    years = [element for innerList in years for element in innerList]
-    favY = max(set(years),key=years.count)
-    favYearCount = years.count(favY)
-    favYear = [favY,favYearCount]
-    #ranked same both years
-    for i in inlist:
-        if len(i['rank'])==1:
-            rank_share = {'name': i['name'], 'artist': i['artist'], 'rank': i['rank'][0], 'years': ', '.join(i['years'])}
-            sameRank.append(rank_share)
-    bigGap=[gap['name'],gap['artist'],gapCount,' and '.join(gapYears)]
-    funstats= {
-        "topArtist": favArtist,
-        "topYear": favYear,
-        "sharedRank" : sameRank,
-        "biggestGap": bigGap 
-    }
-    return funstats
+    if not rawdata:
+        return None
+    else:
+        artistlist=[]
+        years=[]
+        gapCount = 0
+        gap = []
+        bigGap=[]
+        gapYears = []
+        sameRank = []
+        for i in inlist:
+            artistlist.append(i['artist'])
+            years.append(i['years'])
+            for k in range (len(i['years'])-1):
+                tempgap=(abs(int(i['years'][k])-int(i['years'][k+1])))
+                if tempgap>=gapCount and tempgap > 1:
+                    if tempgap>gapCount:
+                        gap.clear()
+                    gapCount=tempgap
+                    gapYears=[(i['years'][k]),(i['years'][k+1])]
+                    gaptext=[i['name'],i['artist'],gapCount,' and '.join(gapYears)]
+                    gap.append(gaptext)
+        favArt = max(set(artistlist),key=artistlist.count)
+        favArtistCount = artistlist.count(favArt)
+        favArtist = [favArt,favArtistCount]
+        #most popular year
+        years = [element for innerList in years for element in innerList]
+        favY = max(set(years),key=years.count)
+        favYearCount = years.count(favY)
+        favYear = [favY,favYearCount]
+        #ranked same both years
+        for i in inlist:
+            if len(i['rank'])==1:
+                rank_share = {'name': i['name'], 'artist': i['artist'], 'rank': i['rank'][0], 'years': ', '.join(i['years'])}
+                sameRank.append(rank_share)
+        funstats= {
+            "topArtist": favArtist,
+            "topYear": favYear,
+            "sharedRank" : sameRank,
+            "biggestGap": gap 
+        }
+        return funstats
 
 def divide_chunks(l, n):
      
