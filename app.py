@@ -1,7 +1,6 @@
 from flask import Flask, request, url_for, session, redirect, render_template
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-import time
 import os
 from flask_session import Session
 
@@ -90,7 +89,7 @@ def wrappedRepeats():
                 })  
             return rows
         
-        return render_template("base.html", rows=maindata(rawdata), funStats=funStats(rawdata), years_string=years_string)
+        return render_template("base.html", rows=maindata(rawdata), funStats=funStats(rawdata), years_string=years_string, wrappedPlaylists=wrappedPlaylists,wrappedLinks=wrappedLinks)
 
 
 @app.route('/makeplaylist')

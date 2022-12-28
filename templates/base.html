@@ -5,18 +5,22 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="shortcut icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
 </head>
-<body class="bg-dark">
+<body style="background-color: #121212;">
     <div style="padding:10px 0px 10px 0px">
         <h1 class="text-center text-light" >Wrapped Repeats</h1>
-        <h6 class="text-center text-light" >Displaying data from Your Top Songs of {{ years_string }}.</h6>
+        <h5 class="text-center" style="color: #B3B3B3" >Displaying data from Your Top Songs of {{ years_string }}.</h5>
+    {% if wrappedLinks %}
+        <h6 class="text-center" style="padding:0px;"><span style="color: #ffffff; font-weight: bold;">Expecting more years?</span><span style="color: #ffffff"> Like these playlists below:</span></h6>
+        <p class="text-center text-light=" style="padding:0px; margin:0px">
+        {% for key, value in wrappedLinks.items() %}
+                <a style = "text-decoration: underline; color: #1db95477" href="{{ url_for(value)}}" target="_blank">{{key}}</a>
+            {% endfor %}
+        {% endif %}
+        </p>
     </div>
-    <p class="text-center text-light"> Expecting more years?
-        <a class="text-light" href="{{ url_for('followmore') }}" style="text-decoration: none;">
-            <button type="button" class="btn btn-sm btn-light mx-2">Click Here</button>
-        </a>
-    </p>
     
-    <button type="button" class="btn btn-lg text-dark mt-4 mb-4" style="background-color: #1Db954; display: block; margin: auto;" onclick="buttonClicked()">Generate Playlist</button>
+    
+    <button type="button" class="btn btn-lg mt-2 mb-4" style="background-color: #1Db954; display: block; margin: auto; color:#121212; font-weight: bold;" onclick="buttonClicked()">Generate Playlist</button>
     <script>
         function buttonClicked() {
             fetch('/makeplaylist')
@@ -26,9 +30,9 @@
                 })
         }
       </script>
-        <table class="table table-striped table-dark">
-        <thead class="thead-dark">
-            <tr>
+        <table class="table table-dark table-striped" style="background-color: #121212">
+        <thead style="background-color: #1Db954; color:#121212">
+            <tr >
                 <th>#</th>
                 <th></th>
                 <th>Name</th>
