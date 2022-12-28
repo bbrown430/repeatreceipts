@@ -19,11 +19,11 @@
     <button type="button" class="btn btn-lg text-dark mt-4 mb-4" style="background-color: #1Db954; display: block; margin: auto;" onclick="buttonClicked()">Generate Playlist</button>
     <script>
         function buttonClicked() {
-          fetch('/makeplaylist')
-            .then(response => response.text())
-            .then(text => {
-              alert(text);
-            });
+            fetch('/makeplaylist')
+                .then(response => response.text())
+                .then(data => {
+                    window.open(data, '_blank')
+                })
         }
       </script>
         <table class="table table-striped table-dark">

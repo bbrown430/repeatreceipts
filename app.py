@@ -12,7 +12,6 @@ app.config['SESSION_TYPE'] = 'filesystem'
 app.config['SESSION_FILE_DIR'] = './.flask_session/'
 Session(app)
 
-
 @app.route('/')
 def login():
     
@@ -51,7 +50,8 @@ def wrappedRepeats():
             'Your Top Songs 2020': 'w2020',
             'Your Top Songs 2019': 'w2019',
             'Your Top Songs 2018': 'w2018',
-            'Your Top Songs 2017': 'w2017'
+            'Your Top Songs 2017': 'w2017',
+            'Your Top Songs 2016': 'w2016'
         }
         
     for item in wrappedPlaylists:
@@ -107,10 +107,10 @@ def makeplaylist():
         songlist.append("spotify:track:"+i['id'])
     splitsonglist= list(divide_chunks(songlist, 100))
     
-    playlistid = ((sp.user_playlist_create(userid, "Wrapped Repeats", public=False, collaborative=False, description="The songs you've loved for multiple years."))['id'])
+    results = (sp.user_playlist_create(userid, "Wrapped Repeats", public=False, collaborative=False, description="The songs you've loved for multiple years."))
     for i in splitsonglist:
-        sp.user_playlist_add_tracks(userid, playlistid, i)
-    return "Playlist generated!"
+        sp.user_playlist_add_tracks(userid, results['id'], i)
+    return results['external_urls']['spotify']
 
 @app.route('/followmore')
 def followmore():
@@ -129,7 +129,8 @@ def followmore():
             'Your Top Songs 2020': 'w2020',
             'Your Top Songs 2019': 'w2019',
             'Your Top Songs 2018': 'w2018',
-            'Your Top Songs 2017': 'w2017'
+            'Your Top Songs 2017': 'w2017',
+            'Your Top Songs 2016': 'w2016'
         }
         
     for item in wrappedPlaylists:
@@ -170,6 +171,10 @@ def w2018():
 @app.route('/w2017')
 def w2017():
     return redirect('https://open.spotify.com/genre/2017-page')
+
+@app.route('/w2016')
+def w2016():
+    return redirect('https://open.spotify.com/genre/2016-page')
 
 def nameScraper(json):
     templist=[]
