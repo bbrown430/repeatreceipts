@@ -30,9 +30,9 @@ def login():
 
     # Step 3. Signed in, display data
     spotify = spotipy.Spotify(auth_manager=auth_manager)
-    return redirect(url_for('wrappedRepeats', _external=True))
+    return redirect(url_for('repeatreceipts', _external=True))
 
-@app.route('/wrappedRepeats')
+@app.route('/repeatreceipts')
 def wrappedRepeats():
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
@@ -121,7 +121,7 @@ def makeplaylist():
         songlist.append("spotify:track:"+i['id'])
     splitsonglist= list(divide_chunks(songlist, 100))
     
-    results = (sp.user_playlist_create(userid, "Wrapped Repeats", public=False, collaborative=False, description="The songs you've loved for multiple years."))
+    results = (sp.user_playlist_create(userid, "Repeat Receipts", public=False, collaborative=False, description="The songs you've loved for multiple years."))
     for i in splitsonglist:
         sp.user_playlist_add_tracks(userid, results['id'], i)
     return results['external_urls']['spotify']
