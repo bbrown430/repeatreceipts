@@ -4,7 +4,7 @@ Ever wonder which songs you keep coming back to year after year? Repeat Receipts
 
 ## Description
 
-Wrapped Repeats is built on Python, and the Flask web framework. It is currently hosted through Render. Spotipy is frequently utilized throughout the project.
+Repeat Receipts is built on Python, and the Flask web framework. It is currently hosted through Render. Spotipy is frequently utilized throughout the project.
 
 ## Try it Here
 
