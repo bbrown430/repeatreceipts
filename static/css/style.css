@@ -75,3 +75,16 @@ a:hover{
 .metadatab{
   color: white;
 }
+
+.disclaimer {
+  color: #8A8A8A;
+  font-weight: 500;
+  vertical-align: middle;
+  }
+
+.splogo {
+  height: 24px;
+  padding-bottom: 2px;
+  padding-left: 2px;
+  vertical-align: middle;
+}

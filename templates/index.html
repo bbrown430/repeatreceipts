@@ -29,7 +29,7 @@
     </div>
     
     {% if rows is not none %}
-    <button type="button" class="btn btn-lg mt-0 mb-4 login" onclick="buttonClicked()">Generate Playlist</button>
+    <button type="button" class="btn btn-lg mt-0 mb-3 login" onclick="buttonClicked()">Generate Playlist</button>
     <script>
         function buttonClicked() {
             fetch('/makeplaylist')
@@ -39,6 +39,7 @@
                 })
         }
       </script>
+    <p class="text-center disclaimer">Metadata provided by <img src="/static//spotifylogo.svg" alt="Spotify Logo" class="splogo"></p>
         <table class="table table-dark table-striped" style="background-color: #121212">
         <thead style="background-color: #1Db954; color:#121212">
             <tr >
