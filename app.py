@@ -33,7 +33,7 @@ def login():
     return redirect(url_for('repeatreceipts', _external=True))
 
 @app.route('/repeatreceipts')
-def wrappedRepeats():
+def repeatreceipts():
     cache_handler = spotipy.cache_handler.FlaskSessionCacheHandler(session)
     auth_manager = spotipy.oauth2.SpotifyOAuth(cache_handler=cache_handler)
     if not auth_manager.validate_token(cache_handler.get_cached_token()):
