@@ -2,7 +2,7 @@
 
 {% block content %}
     <div style="padding:10px 0px 0px 0px">
-        <h1 class="text-center" >Wrapped Repeats</h1>
+        <h1 class="text-center" >Repeat Receipts</h1>
     {% if wrappedPlaylists|length<1 %}
         <h5 class="text-center" >We couldn't find any of Your Top Song Playlists.</h5>
     {% elif wrappedPlaylists|length==1 %}
@@ -54,9 +54,9 @@
         {% for row in rows %}
             <tr>
                 <td>{{ row['count'] }}</td>
-                <td><img src="{{ row['image'] }}" alt="{{ row['name'] }} art" style="width: 48px; height: 48px;"></td>
-                <td>{{ row['name'] }}</td>
-                <td>{{ row['artist'] }}</td>
+                <td><a href="{{ row['albumlink'] }}" target="_blank"><img src="{{ row['image'] }}" alt="{{ row['name'] }} art" style="width: 48px; height: 48px;"></a></td>
+                <td ><a href="{{ row['tracklink'] }}" target="_blank" class="metadatab">{{ row['name'] }}</a></td>
+                <td ><a href="{{ row['artistlink'] }}" target="_blank" class="metadatab">{{ row['artist'] }}</a></td>
                 <td>{{ row['rank'] }}</td>
                 <td>{{ row['ocurrences'] }}</td>
                 <td>{{ row['years'] }}</td>
@@ -66,7 +66,7 @@
     <h2 class="text-center mt-4 mb-2">Additional Stats</h2>
     <p class="text-center stattext">
         Your favorite artist was {{ funStats['topArtist'][0]}} with {{ funStats['topArtist'][1]}} appearances.</br>
-        Songs in your {{ funStats['topYear'][0]}} Wrapped were featured {{ funStats['topYear'][1]}} other times.</br>
+        Songs in Your Top Songs of {{ funStats['topYear'][0]}} were featured {{ funStats['topYear'][1]}} other times.</br>
         {% for tup in funStats['sharedRank'] %}
             {{ tup['name'] }} by {{ tup['artist'] }} was ranked exactly {{ tup['rank'] }} in both {{ tup['years'] }}.</br> 
         {% endfor %}

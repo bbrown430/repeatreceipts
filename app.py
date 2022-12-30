@@ -87,7 +87,11 @@ def wrappedRepeats():
                 'artist' : item['artist'],
                 'rank': round(item['avgrank']),
                 'ocurrences': len(item['years']),
-                'years': (', '.join(item['years']))
+                'years': (', '.join(item['years'])),
+                'artistlink': item['artistlink'],
+                'tracklink': item['tracklink'],
+                'albumlink': item['albumlink'],
+
             })  
         return rows
     
@@ -216,7 +220,10 @@ def playlistParser(name, json):
         "years": [],
         "rank" : [count],
         "avgrank" : [],
-        "image" : image
+        "image" : image,
+        "artistlink": i['track']['artists'][0]['external_urls']['spotify'],
+        "albumlink": i['track']['album']['external_urls']['spotify'],
+        "tracklink": i['track']['external_urls']['spotify']
         }
         templist.append(tempdict)
         count+=1
@@ -322,7 +329,6 @@ def funStats(inlist):
         years=[]
         gapCount = 0
         gap = []
-        bigGap=[]
         gapYears = []
         sameRank = []
         for i in inlist:
