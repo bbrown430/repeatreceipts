@@ -365,11 +365,19 @@ def funStats(inlist):
         return funstats
 
 def divide_chunks(l, n):
-     
     # looping till length l
     for i in range(0, len(l), n):
         yield l[i:i + n]
      
+def keep_alive():
+    while True:
+        requests.get('http://your-app.com')
+        time.sleep(300)  # sleep for 5 minutes
+
+
+
 if __name__ == '__main__':
     app.run(threaded=True, port=int(os.environ.get("PORT",
                                                    os.environ.get("SPOTIPY_REDIRECT_URI", 8080).split(":")[-1])))
+    t = threading.Thread(target=keep_alive)
+    t.start()
