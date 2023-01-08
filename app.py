@@ -113,7 +113,6 @@ def makeplaylist():
 
     sp = spotipy.Spotify(auth_manager=auth_manager)
     #sets user ID (could be simplified)
-    userid = sp.me()["id"]
     
     #list of song IDS
     songlist=[]
@@ -121,7 +120,7 @@ def makeplaylist():
         songlist.append("spotify:track:"+i['id'])
     splitsonglist= list(divide_chunks(songlist, 100))
     
-    results = (sp.user_playlist_create(userid, "Repeat Beats", public=False, collaborative=False, description="The songs you've loved for multiple years."))
+    results = (sp.user_playlist_create(sp.current_user()["id"], "Repeat Beats", public=False, collaborative=False, description="The songs you've loved for multiple years."))
     for i in splitsonglist:
         sp.user_playlist_add_tracks(userid, results['id'], i)
     return results['external_urls']['spotify']
