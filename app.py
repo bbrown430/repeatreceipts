@@ -68,9 +68,6 @@ def repeatreceipts():
         years.sort()
     years_string = ', '.join(years)
     
-    #needs to be global to be accessed when making playlist
-    global rawdata
-    
     #data processing
     rawdata = splitlist(cleanList(loopAllYears(wrappedPlaylists,sp)))
     
@@ -112,7 +109,7 @@ def makeplaylist():
         return redirect('/')
 
     sp = spotipy.Spotify(auth_manager=auth_manager)
-    
+    rawdata = splitlist(cleanList(loopAllYears(wrappedPlaylists,sp)))
     #list of song IDS
     songlist=[]
     for i in rawdata:
