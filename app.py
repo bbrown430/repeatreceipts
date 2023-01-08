@@ -140,7 +140,7 @@ def repeatreceipts():
     else:
         inputrows=None
         
-    return render_template("index.html", rows=inputrows, funStats=funStats, years_string=years_string, wrappedPlaylists=wrappedPlaylists,wrappedLinks=wrappedLinks)
+    return render_template("index.html", rows=inputrows, funStats=funstats, years_string=years_string, wrappedPlaylists=wrappedPlaylists,wrappedLinks=wrappedLinks)
 
 
 @app.route('/makeplaylist')
