@@ -35,7 +35,9 @@
             fetch('/makeplaylist')
                 .then(response => response.text())
                 .then(data => {
-                    window.open(data, '_blank', 'noopener noreferrer')
+                    setTimeout(() => {
+                        window.open(data, '_blank');
+                    })
                 })
         }
       </script>
