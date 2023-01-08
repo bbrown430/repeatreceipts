@@ -102,7 +102,7 @@ def repeatreceipts():
         gap = []
         gapYears = []
         sameRank = []
-        for i in inlist:
+        for i in rawdata:
             artistlist.append(i['artist'])
             years.append(i['years'])
             for k in range (len(i['years'])-1):
@@ -123,7 +123,7 @@ def repeatreceipts():
         favYearCount = years.count(favY)
         favYear = [favY,favYearCount]
         #ranked same both years
-        for i in inlist:
+        for i in rawdata:
             if len(i['rank'])==1:
                 rank_share = {'name': i['name'], 'artist': i['artist'], 'rank': i['rank'][0], 'years': ', '.join(i['years'])}
                 sameRank.append(rank_share)
