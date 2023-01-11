@@ -34,13 +34,12 @@
         function buttonClicked() {
             let button = document.querySelector('.login');
             button.innerText = 'Generating...';
-
             fetch('/makeplaylist')
                 .then(response => response.text())
                 .then(data => {
                     setTimeout(() => {
-                        window.open(data, '_blank');
                         button.innerText = 'Generated!';
+                        window.open(data, '_blank');
                     })
                 })
         }
