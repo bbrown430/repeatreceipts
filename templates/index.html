@@ -32,11 +32,15 @@
     <button type="button" class="btn btn-lg mt-0 mb-3 login" onclick="buttonClicked()">Generate Playlist</button>
     <script>
         function buttonClicked() {
+            let button = document.querySelector('.login');
+            button.innerText = 'Generating...';
+
             fetch('/makeplaylist')
                 .then(response => response.text())
                 .then(data => {
                     setTimeout(() => {
                         window.open(data, '_blank');
+                        button.innerText = 'Generated!';
                     })
                 })
         }

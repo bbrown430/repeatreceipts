@@ -179,14 +179,11 @@ def scrapeLoop(sp):
 
 #searches all user playlists for Your Top Songs Playlists
 def searchList(json):
-    yourTopList=[]
-    for i in json:
-        if "Your Top Songs 20" in i['name']:
-            tempdict={
-            "name": i['name'],
-            "id": i['id'],
-            }
-            yourTopList.append(tempdict)
+    yourTopList = [
+        {"name": i["name"], "id": i["id"]}
+        for i in json
+        if "Your Top Songs 20" in i["name"]
+    ]
     return yourTopList
 
 # dont remember
