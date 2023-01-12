@@ -39,11 +39,14 @@
 
             if (!listGenerated){
                 button.innerText = 'Generating...';
+                button.classList.add("generating");
                 fetch('/makeplaylist')
                     .then(response => response.text())
                     .then(responsedata => {
                         data = responsedata;
                         setTimeout(() => {
+                            button.classList.remove("generating");
+                            button.classList.add("pulse");
                             button.innerText = 'Open Playlist';
                             listGenerated = true;
                         })

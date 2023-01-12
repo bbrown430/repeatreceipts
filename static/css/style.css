@@ -66,6 +66,10 @@ a:hover{
   background-color:white
 }
 
+.generating {
+  background-color:white
+}
+
 .infobox{
   width:400px;
   color: #B3B3B3;
@@ -87,4 +91,19 @@ a:hover{
   padding-bottom: 2px;
   padding-left: 2px;
   vertical-align: middle;
+}
+
+.login.pulse {
+  animation: pulse 0.5s 1;
+}
+@keyframes pulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.1);
+  }
+  100% {
+      transform: scale(1);
+  }
 }
