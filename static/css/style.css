@@ -3,6 +3,25 @@ body {
     background-color: #121212;
   }
 
+footer{
+  padding-top: 1rem;
+  padding-bottom: 0.5rem;
+}
+
+.footerlink {
+  color: #B3B3B3;
+  font-weight: 300;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+.footertext {
+  color: #1Db954;
+  font-weight: 600;
+  margin-left: 6px;
+  margin-right: 6px;
+}
+
+
 h1 {
     font-weight: 800;
     color: #1Db954;
@@ -113,3 +132,4 @@ a:hover{
     background-color: #1Db954;
   }
 }
+
