@@ -67,7 +67,7 @@ a:hover{
 }
 
 .generating {
-  background-color:white
+  background-color:white !important;
 }
 
 .infobox{
@@ -105,5 +105,11 @@ a:hover{
   }
   100% {
       transform: scale(1);
+  }
+}
+
+@media (hover: none) {
+  .login:hover {
+    background-color: #1Db954;
   }
 }

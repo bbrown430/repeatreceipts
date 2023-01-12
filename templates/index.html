@@ -46,6 +46,7 @@
                         data = responsedata;
                         setTimeout(() => {
                             button.classList.remove("generating");
+                            button.style.pointerEvents = "none";
                             button.classList.add("pulse");
                             button.innerText = 'Open Playlist';
                             listGenerated = true;
