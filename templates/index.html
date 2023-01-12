@@ -31,18 +31,33 @@
     {% if rows is not none %}
     <button type="button" class="btn btn-lg mt-0 mb-3 login" onclick="buttonClicked()">Generate Playlist</button>
     <script>
+        let listGenerated = false;
+        let data;
+
         function buttonClicked() {
             let button = document.querySelector('.login');
-            button.innerText = 'Generating...';
-            fetch('/makeplaylist')
-                .then(response => response.text())
-                .then(data => {
-                    setTimeout(() => {
-                        button.innerText = 'Generated!';
-                        window.open(data, '_blank');
+
+            if (!listGenerated){
+                button.innerText = 'Generating...';
+                fetch('/makeplaylist')
+                    .then(response => response.text())
+                    .then(responsedata => {
+                        data = responsedata;
+                        setTimeout(() => {
+                            button.innerText = 'Open Playlist';
+                            listGenerated = true;
+                        })
                     })
+                }
+            else {
+                setTimeout(() => {
+                    window.open(data, '_blank');
                 })
-        }
+            }
+        }   
+
+        
+
       </script>
     <p class="text-center disclaimer">Metadata provided by <img src="/static//spotifylogo.svg" alt="Spotify Logo" class="splogo"></p>
         <table class="table table-dark table-striped" style="background-color: #121212">
