@@ -3,6 +3,11 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import os
 from flask_session import Session
+import requests
+from PIL import Image, ImageDraw, ImageFont
+from io import BytesIO
+import base64  
+from base64 import b64encode
 
 app = Flask(__name__, static_folder='static')
 
@@ -92,7 +97,7 @@ def repeatreceipts():
             })  
         return rows
     
-    
+    #funstats
     if not rawdata:
         return None
     else:
@@ -134,6 +139,58 @@ def repeatreceipts():
             "biggestGap": gap 
         }
     
+    #share image generation
+    # Create an image with the specified dimensions
+    image = Image.new('RGB', (1080, 1920), color = (18, 18, 18))
+    draw = ImageDraw.Draw(image, 'RGBA')
+    
+    #fonts
+    font_path = os.path.join('static', 'fonts')
+    titlefont = ImageFont.truetype(os.path.join(font_path, 'Inter-Black.ttf'), 80)
+    morefont = ImageFont.truetype(os.path.join(font_path, "Inter-Bold.ttf"), 40)
+    songfont = ImageFont.truetype(os.path.join(font_path, "Inter-Bold.ttf"), 40)
+    artistfont = ImageFont.truetype(os.path.join(font_path, "Inter-Medium.ttf"), 32)
+    yearfont = ImageFont.truetype(os.path.join(font_path, "Inter-Light.ttf"), 24)
+    rankfont = ImageFont.truetype(os.path.join(font_path, "Inter-Black.ttf"), 96)
+    
+    # Draw constants
+    draw.ellipse((389, 711, 389+1004, 711+1004), fill=(29, 185, 84, 13))
+    draw.ellipse((-196, 305, -196+1052, 305+1052), fill=(29, 185, 84, 13))
+    draw.ellipse((-283, 1141, -283+802, 1141+802), fill=(29, 185, 84, 13))
+    draw.text((126,190), "Repeat Beats", font=titlefont, fill=(29,185,84))
+    draw.text((444,1813), "repeatreceipts.onrender.com", font=songfont, fill=(29,185,84, 196))
+    # loop through relavent image data
+    pos=0
+    for i in range (0,5):
+        #get image from rawdata
+        response=requests.get(rawdata[i]['image'])
+        #resize
+        albumart=(Image.open(BytesIO(response.content)).resize((210,210)))
+        #y positioning
+        ypos = 384+(pos*265)
+        #paste image into canvas
+        image.paste(albumart,(226,ypos))
+        #text
+        #song title
+        songtitle=rawdata[i]['name']
+        songtitle = (songtitle[:20] + '...') if len(songtitle) > 20 else songtitle
+        draw.text((478,ypos+49), songtitle, font=songfont, fill=(255,255,255))
+        #song artist
+        draw.text((478,ypos+105), rawdata[i]['artist'], font=artistfont, fill=(255,255,255))
+        #song year
+        draw.text((478,ypos+157), (', '.join(rawdata[i]['years'])), font=yearfont, fill=(255,255,255))
+        #song rank
+        draw.text((120,ypos+47), f"{i+1}", font=rankfont, fill=(255,255,255))
+        #increment positioning
+        pos+=1
+    #Wites plus ## more...
+    moresongs = (len(rawdata)-5)
+    draw.text((116,1709), f"Plus {moresongs} more...", font=morefont, fill=(179,179,179))
+    # Save the image
+    image_io = BytesIO()
+    image.save(image_io, 'JPEG')
+    dataurl = 'data:image/png;base64,' + b64encode(image_io.getvalue()).decode('ascii')
+
     
     #stops HTML conditions from breaking
     if rawdata:
@@ -141,7 +198,7 @@ def repeatreceipts():
     else:
         inputrows=None
         
-    return render_template("index.html", rows=inputrows, funStats=funStats, years_string=years_string, wrappedPlaylists=wrappedPlaylists,wrappedLinks=wrappedLinks)
+    return render_template("index.html", rows=inputrows, funStats=funStats, years_string=years_string, wrappedPlaylists=wrappedPlaylists,wrappedLinks=wrappedLinks, shareimage=dataurl)
 
 
 @app.route('/makeplaylist')
