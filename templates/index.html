@@ -71,7 +71,7 @@
         fetch(" {{shareimage}} ")
             .then(response => response.blob())
             .then(blob => {
-                const file = new File([blob], "Repeat Beats.jpg", { type: "image/jpeg" });
+                const file = new File([blob], "Repeat Beats.png", { type: "image/png" });
                 navigator.share({
                     title: "My Repeat Beats",
                     text: "Check out your Repeat Beats at repeatreceipts.onrender.com",
