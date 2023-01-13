@@ -188,7 +188,7 @@ def repeatreceipts():
     draw.text((116,1709), f"Plus {moresongs} more...", font=morefont, fill=(179,179,179))
     # Save the image
     image_io = BytesIO()
-    image.save(image_io, 'JPEG')
+    image.save(image_io, 'PNG')
     dataurl = 'data:image/png;base64,' + b64encode(image_io.getvalue()).decode('ascii')
 
     
@@ -292,7 +292,7 @@ def loopAllYears(json,sp):
     parsedPlaylists=[]
     for i in json:
         parsedPlaylists.append(playlistParser(i['name'],sp.playlist_tracks(i['id'])))
-    
+
     for i in parsedPlaylists:
         for j in parsedPlaylists:
             masterList.append(playlistCompare(i, j))
@@ -304,10 +304,13 @@ def playlistParser(name, json):
     count = 1
     for i in json['items']:
         if i.get("track").get("album").get('images'):
-            image = i.get("track").get("album").get('images')[2].get('url')
+            if count>4:
+                image = i.get("track").get("album").get('images')[2].get('url')
+            else:
+                image = i.get("track").get("album").get('images')[0].get('url')
         else:
             image = "https://media.wired.com/photos/5a0201b14834c514857a7ed7/master/pass/1217-WI-APHIST-01.jpg"
-        
+
         tempdict={
         "name": i['track']['name'],
         "id": i['track']['id'],
