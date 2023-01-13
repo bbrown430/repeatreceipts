@@ -304,10 +304,7 @@ def playlistParser(name, json):
     count = 1
     for i in json['items']:
         if i.get("track").get("album").get('images'):
-            if count>4:
-                image = i.get("track").get("album").get('images')[2].get('url')
-            else:
-                image = i.get("track").get("album").get('images')[0].get('url')
+                image = i.get("track").get("album").get('images')[1].get('url')
         else:
             image = "https://media.wired.com/photos/5a0201b14834c514857a7ed7/master/pass/1217-WI-APHIST-01.jpg"
 
