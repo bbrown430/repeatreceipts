@@ -67,23 +67,19 @@
     <script>
     // Get reference to the share button
     const shareButton = document.getElementById("share-button");
-    
+
     // Add an event listener to the share button
     shareButton.addEventListener("click", () => {
-        // Use fetch or XMLHttpRequest to get the image data
-        fetch(" {{shareimage}} ")
-            .then(response => response.blob())
-            .then(blob => {
-                // Create a file object
-                const file = new File([blob], "image.jpg", { type: "image/jpeg" });
-                
-                // Use the `navigator.share()` method to share the file
-                navigator.share({
+    fetch(" {{shareimage}} ")
+        .then(response => response.blob())
+        .then(blob => {
+            const file = new File([blob], "Repeat Beats.jpg", { type: "image/jpeg" });
+            navigator.share({
                 title: "My Repeat Beats",
                 text: "Check out your Repeat Beats at repeatreceipts.onrender.com",
                 files: [file]
-                });
             });
+        });
     });
     </script>
 
