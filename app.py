@@ -161,7 +161,7 @@ def repeatreceipts():
     draw.text((444,1813), "repeatreceipts.onrender.com", font=songfont, fill=(29,185,84, 196))
     # loop through relavent image data
     pos=0
-    for i in range (0,5):
+    for i in range(min(len(rawdata), 5)):
         #get image from rawdata
         response=requests.get(rawdata[i]['image'])
         #resize
@@ -184,8 +184,9 @@ def repeatreceipts():
         #increment positioning
         pos+=1
     #Wites plus ## more...
-    moresongs = (len(rawdata)-5)
-    draw.text((116,1709), f"Plus {moresongs} more...", font=morefont, fill=(179,179,179))
+    if len(rawdata)>5:
+        moresongs = (len(rawdata)-5)
+        draw.text((116,1709), f"Plus {moresongs} more...", font=morefont, fill=(179,179,179))
     # Save the image
     image_io = BytesIO()
     image.save(image_io, 'PNG')
