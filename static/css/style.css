@@ -72,10 +72,12 @@ a:hover{
   color: #B3B3B3;
 }
 
+.buttondiv{
+  text-align: center;
+}
+
 .login{
   background-color: #1Db954;
-  display: block;
-  margin: auto; 
   color:#121212;
   font-weight: bold;
   transition: background-color 0.5s;

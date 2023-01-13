@@ -29,59 +29,59 @@
     </div>
     
     {% if rows is not none %}
-    <button type="button" class="btn btn-lg mt-0 mb-3 login" onclick="buttonClicked()">Generate Playlist</button>
-    <script>
-        let listGenerated = false;
-        let data;
+    <div class="buttondiv">
+        <button type="button" class="btn btn-lg mt-0 mb-3 login" onclick="buttonClicked()">Generate Playlist</button>
+        <script>
+            let listGenerated = false;
+            let data;
 
-        function buttonClicked() {
-            let button = document.querySelector('.login');
+            function buttonClicked() {
+                let button = document.querySelector('.login');
 
-            if (!listGenerated){
-                button.innerText = 'Generating...';
-                button.classList.add("generating");
-                fetch('/makeplaylist')
-                    .then(response => response.text())
-                    .then(responsedata => {
-                        data = responsedata;
-                        setTimeout(() => {
-                            button.classList.remove("generating");
-                            button.classList.add("pulse");
-                            button.innerText = 'Open Playlist';
-                            listGenerated = true;
+                if (!listGenerated){
+                    button.innerText = 'Generating...';
+                    button.classList.add("generating");
+                    fetch('/makeplaylist')
+                        .then(response => response.text())
+                        .then(responsedata => {
+                            data = responsedata;
+                            setTimeout(() => {
+                                button.classList.remove("generating");
+                                button.classList.add("pulse");
+                                button.innerText = 'Open Playlist';
+                                listGenerated = true;
+                            })
                         })
+                    }
+                else {
+                    setTimeout(() => {
+                        window.open(data, '_blank');
                     })
                 }
-            else {
-                setTimeout(() => {
-                    window.open(data, '_blank');
-                })
-            }
-        }   
+            }  
+        </script>
 
-        
+        <button id="share-button" class="btn btn-lg mt-0 mb-3 login">Share</button>
+        <script>
+        // Get reference to the share button
+        const shareButton = document.getElementById("share-button");
 
-      </script>
-
-    <button id="share-button">Share</button>
-    <script>
-    // Get reference to the share button
-    const shareButton = document.getElementById("share-button");
-
-    // Add an event listener to the share button
-    shareButton.addEventListener("click", () => {
-    fetch(" {{shareimage}} ")
-        .then(response => response.blob())
-        .then(blob => {
-            const file = new File([blob], "Repeat Beats.jpg", { type: "image/jpeg" });
-            navigator.share({
-                title: "My Repeat Beats",
-                text: "Check out your Repeat Beats at repeatreceipts.onrender.com",
-                files: [file]
+        // Add an event listener to the share button
+        shareButton.addEventListener("click", () => {
+        fetch(" {{shareimage}} ")
+            .then(response => response.blob())
+            .then(blob => {
+                const file = new File([blob], "Repeat Beats.jpg", { type: "image/jpeg" });
+                navigator.share({
+                    title: "My Repeat Beats",
+                    text: "Check out your Repeat Beats at repeatreceipts.onrender.com",
+                    files: [file]
+                });
             });
         });
-    });
-    </script>
+        </script>
+    </div>
+
 
     <p class="text-center disclaimer">Metadata provided by <img src="/static//spotifylogo.svg" alt="Spotify Logo" class="splogo"></p>
         <table class="table table-dark table-striped" style="background-color: #121212">
