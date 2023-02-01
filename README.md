@@ -18,9 +18,7 @@ Repeat Receipts is live at [repeatreceipts.onrender.com][repeatreceipts.onrender
 
 Brian Brown
 
-[My LinkedIn][My LinkedIn]
-
-[My Portfolio][My Portfolio]
+[My LinkedIn][My LinkedIn] - [My Portfolio][My Portfolio]
 
 
 ## Upcoming Features
