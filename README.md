@@ -1,6 +1,9 @@
 # Repeat Receipts
 
 Ever wonder which songs you keep coming back to year after year? Repeat Receipts has the answer. Now, you can effortlessly see which songs have shown up on multiple Wrapped playlists, along with their average ranking. Other features include playlist generation, a story shareable image, and addition stats for extra fun.
+
+[![Website Image](https://raw.githubusercontent.com/bbrown430/repeatreceipts/master/static/images/webpage-screenshot.jpeg "Website Image")](https://raw.githubusercontent.com/bbrown430/repeatreceipts/master/static/images/webpage-screenshot.jpeg "Website Image")
+
 ## Features
 
 - Spotify OAuth
@@ -9,6 +12,8 @@ Ever wonder which songs you keep coming back to year after year? Repeat Receipts
 - Playlist generation of Repeat Beats
 - Sharable story image displaying user’s top 5 songs
 - Additional stats including top artist, top year, largest gap between years, same ranking across multiple years
+
+[![Share Image](https://raw.githubusercontent.com/bbrown430/repeatreceipts/master/static/images/share-example.png "Share Image")](https://raw.githubusercontent.com/bbrown430/repeatreceipts/master/static/images/share-example.png "Share Image")
 
 ## Getting Started
 
