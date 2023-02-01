@@ -13,7 +13,8 @@ Ever wonder which songs you keep coming back to year after year? Repeat Receipts
 - Sharable story image displaying user’s top 5 songs
 - Additional stats including top artist, top year, largest gap between years, same ranking across multiple years
 
-[![Share Image](https://raw.githubusercontent.com/bbrown430/repeatreceipts/master/static/images/share-example.png "Share Image")](https://raw.githubusercontent.com/bbrown430/repeatreceipts/master/static/images/share-example.png "Share Image")
+
+<img src="https://raw.githubusercontent.com/bbrown430/repeatreceipts/master/static/images/share-example.png" alt="Share Image" width="300"/>
 
 ## Getting Started
 
