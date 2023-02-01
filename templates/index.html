@@ -71,12 +71,20 @@
         fetch(" {{shareimage}} ")
             .then(response => response.blob())
             .then(blob => {
-                const file = new File([blob], "Repeat Beats.png", { type: "image/png" });
-                navigator.share({
+                if (navigator.share && /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                    const file = new File([blob], "Repeat Beats.png", { type: "image/png" });
+                    navigator.share({
                     title: "My Repeat Beats",
                     text: "Check out your Repeat Beats at repeatreceipts.onrender.com",
                     files: [file]
-                });
+                    });
+                } else {
+                    // Download the image if share is not available
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = "Repeat Beats.png";
+                    link.click();
+                }
             });
         });
         </script>
