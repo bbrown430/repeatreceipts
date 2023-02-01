@@ -426,7 +426,6 @@ def divide_chunks(l, n):
     for i in range(0, len(l), n):
         yield l[i:i + n]
 
-
 if __name__ == '__main__':
     app.run(threaded=True, port=int(os.environ.get("PORT",
                                                    os.environ.get("SPOTIPY_REDIRECT_URI", 8080).split(":")[-1])))

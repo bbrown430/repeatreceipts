@@ -1,19 +1,26 @@
-# Repeat Recipts
+#Repeat Receipts
+Ever wonder which songs you keep coming back to year after year? Repeat Receipts has the answer. Now, you can effortlessly see which songs have shown up on multiple Wrapped playlists, along with their average ranking. Other features include playlist generation, a story shareable image, and addition stats for extra fun.
+##Features
+- Spotify OAuth
+- Redirects to follow previous years playlists if not found on user’s profile
+- Detailed list displaying song metadata, weighted ranking, and years of repitition
+- Playlist generation of Repeat Beats
+- Sharable story image displaying user’s top 5 songs
+- Additional stats including top artist, top year, largest gap between years, same ranking across multiple years
 
-Ever wonder which songs you keep coming back to year after year? Repeat Receipts has the answer. Now, you can effortlessly see which songs have shown up on multiple Wrapped playlists, along with their average ranking. Additionally, you can generate a playlist of your repeating songs, and see additional stats for extra fun.
+##Getting Started
+Repeat Receipts is live at [repeatreceipts.onrender.com][repeatreceipts.onrender.com] Try it out!
 
-## Description
-
-Repeat Receipts is built on Python, and the Flask web framework. It is currently hosted through Render. Spotipy is frequently utilized throughout the project.
-
-## Try it Here
-
-repeatreceipts.onrender.com
-
-## Authors
-
+##Contributors
 Brian Brown
+[My LinkedIn][My LinkedIn]
+[My Portfolio][My Portfolio]
 
-## Version History
-* 0.1
-    * Initial Release
+##Upcoming Features
+- Rewrite in React
+- General optimizations
+
+[Repeat Receipts]: http://repeatreceipts.onrender.com "repeatreceipts.onrender.com"
+[repeatreceipts.onrender.com]: http://repeatreceipts.onrender.com "repeatreceipts.onrender.com"
+[My Portfolio]: https://bsquareddesigns.net "My Portfolio"
+[My LinkedIn]: https://www.linkedin.com/in/brian-brown-neu/ "My LinkedIn"
