@@ -33,5 +33,5 @@ Brian Brown
 
 [Repeat Receipts]: http://repeatreceipts.onrender.com "repeatreceipts.onrender.com"
 [repeatreceipts.onrender.com]: http://repeatreceipts.onrender.com "repeatreceipts.onrender.com"
-[My Portfolio]: https://bsquareddesigns.net "My Portfolio"
+[My Portfolio]: [www.brianbrown.io](https://www.brianbrown.io/) "My Portfolio"
 [My LinkedIn]: https://www.linkedin.com/in/brian-brown-neu/ "My LinkedIn"
