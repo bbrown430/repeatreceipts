@@ -54,6 +54,7 @@ def repeatreceipts():
     
     #links to be passed into HTML
     wrappedLinks = {
+            '2023': 'w2023',
             '2022': 'w2022',
             '2021': 'w2021',
             '2020': 'w2020',
@@ -228,6 +229,10 @@ def makeplaylist():
     for i in splitsonglist:
         sp.user_playlist_add_tracks(sp.current_user()["id"], results['id'], i)
     return results['external_urls']['spotify']
+
+@app.route('/w2023')
+def w2022():
+    return redirect('https://www.spotify.com/us/wrapped')
 
 @app.route('/w2022')
 def w2022():
