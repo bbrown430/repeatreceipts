@@ -231,7 +231,7 @@ def makeplaylist():
     return results['external_urls']['spotify']
 
 @app.route('/w2023')
-def w2022():
+def w2023():
     return redirect('https://www.spotify.com/us/wrapped')
 
 @app.route('/w2022')
